@@ -449,24 +449,6 @@ window.__ModuleLoader__.load({
 				},
 				(props) => h(MountDock, { ...props, ctx })
 			));
-
-			// New-session hero screen: this slot renders before a sessionId
-			// exists (all composer.dock/input.* slots are sessionId-gated).
-			// The slot is single-occupant: registering it shadows the host's own
-			// agent-preset (mode) selector. Only claim it where the picker can
-			// actually open (desktop shell); on the web, stay out of the way.
-			const heroAvailable = typeof window !== "undefined"
-				&& window.dshBridge
-				&& typeof window.dshBridge.pick === "function";
-			if (heroAvailable) ctx.slots.inject("conversation.hero.agentPreset", () => ctx.slots.register(
-				{
-					name: "conversation.hero.agentPreset",
-					id: "dsh-desktop-folders-hero-mount",
-					order: 10,
-					locale: NS
-				},
-				(props) => h(HeroMount, { ...props, ctx })
-			));
 		}
 
 		return { inject: INJECT, apply };
