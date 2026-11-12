@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "本地文件夹",
+    "description": "管理 DSH Desktop 连接的本地文件夹（Cowork 式信任目录）：连接、查看、撤销，均走系统确认框。"
+  }
+}
