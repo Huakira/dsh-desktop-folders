@@ -25,14 +25,15 @@ window.__ModuleLoader__.load({
 			.ddf-connect[disabled] { opacity: .5; cursor: default; }
 			.ddf-hint { margin-top: 10px; padding: 0 4px; font-size: 11.5px; line-height: 17px; color: var(--dsw-alias-label-tertiary); }
 			.ddf-empty { padding: 14px; text-align: center; font-size: 12.5px; color: var(--dsw-alias-label-secondary); }
-			.ddf-mount { flex: none; display: inline-flex; align-items: center; gap: 6px; border: none; border-radius: 999px; height: 28px; padding: 0 10px; font-size: 12px; line-height: 17px; font-weight: 600; cursor: pointer; background: color-mix(in srgb, var(--dsw-alias-label-secondary) 10%, transparent); color: var(--dsw-alias-label-primary); transition: background .16s ease; }
-			.ddf-mount:hover { background: color-mix(in srgb, var(--dsw-alias-label-secondary) 20%, transparent); }
-			.ddf-mount[disabled] { opacity: .5; cursor: default; }
-			.ddf-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 220px; height: 22px; padding: 0 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--dsw-alias-label-primary) 14%, transparent); background: color-mix(in srgb, var(--dsw-alias-label-secondary) 7%, transparent); color: var(--dsw-alias-label-secondary); font-size: 11.5px; line-height: 16px; }
-			.ddf-chip-path { min-width: 0; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--dsw-alias-label-primary); }
-			.ddf-chip-x { flex: none; border: none; background: transparent; cursor: pointer; padding: 0 2px; font-size: 12px; line-height: 16px; color: var(--dsw-alias-label-tertiary); border-radius: 999px; }
+			.ddf-mount { flex: none; display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 999px; height: 26px; padding: 0 10px; font-size: 12px; line-height: 17px; font-weight: 600; cursor: pointer; background: transparent; color: var(--dsw-alias-label-tertiary); white-space: nowrap; max-width: 100%; transition: color .16s ease, background .16s ease; }
+			.ddf-mount:hover { color: var(--dsw-alias-label-secondary); background: var(--dsw-alias-interactive-bg-hover); }
+			.ddf-mount[disabled] { opacity: .45; cursor: default; }
+			.ddf-chip { flex: none; display: inline-flex; align-items: center; gap: 4px; max-width: 160px; height: 22px; padding: 0 4px 0 8px; border-radius: 999px; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary); font-size: 11.5px; line-height: 16px; }
+			.ddf-chip:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-secondary); }
+			.ddf-chip-path { min-width: 0; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--dsw-alias-label-tertiary); }
+			.ddf-chip-x { flex: none; border: 0; background: transparent; cursor: pointer; padding: 0 2px; font-size: 12px; line-height: 16px; color: var(--dsw-alias-label-tertiary); border-radius: 999px; }
 			.ddf-chip-x:hover { color: var(--dsw-alias-label-primary); }
-			.ddf-mountrow { display: flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; overflow-x: auto; }
+			.ddf-mountrow { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; margin-left: 10px; max-width: calc(100% - 90px); min-width: 0; }
 		`;
 
 		/* ------------------------------------------------------------------ */
@@ -52,7 +53,7 @@ window.__ModuleLoader__.load({
 			"hint.desktop": "连接与撤销都会弹系统确认框；删除文件始终先确认、且只移入废纸篓。撤销后 DSH 不再能读写该文件夹（文件保留）。"
 		};
 		const mountZh = {
-			"mount.button": "挂载文件夹",
+			"mount.button": "mount",
 			"mount.unavailable": "仅在 DSH Desktop 中可用",
 			"mount.busy": "选择中…",
 			"mount.none": "本会话未挂载文件夹",
@@ -62,7 +63,7 @@ window.__ModuleLoader__.load({
 			"mount.notify.cancel": "已取消，未挂载文件夹"
 		};
 		const mountEn = {
-			"mount.button": "Mount folder",
+			"mount.button": "mount",
 			"mount.unavailable": "Available in DSH Desktop only",
 			"mount.busy": "Picking…",
 			"mount.none": "No folder mounted in this session",
