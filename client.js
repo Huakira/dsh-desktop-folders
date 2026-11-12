@@ -61,7 +61,8 @@ window.__ModuleLoader__.load({
 			"mount.off": "卸载",
 			"mount.notify.connected": "已连接 {path}，可直接读写（也用命令 /macmount 管理）",
 			"mount.notify.mounted": "已挂载 {path}",
-			"mount.notify.cancel": "已取消，未挂载文件夹"
+			"mount.notify.cancel": "已取消，未挂载文件夹",
+			"mount.heroHint": "选定后自动加入信任列表；发送第一条消息时挂载到该会话"
 		};
 		const mountEn = {
 			"mount.button": "mount",
@@ -71,7 +72,8 @@ window.__ModuleLoader__.load({
 			"mount.off": "Unmount",
 			"mount.notify.connected": "Connected {path}; it is now readable and writable (manage with /macmount)",
 			"mount.notify.mounted": "Mounted {path}",
-			"mount.notify.cancel": "Canceled — nothing mounted"
+			"mount.notify.cancel": "Canceled — nothing mounted",
+			"mount.heroHint": "Auto-trusted on pick; mounts to this session when you send the first message"
 		};
 		const en = {
 			"page.title": "Local folders",
@@ -223,6 +225,22 @@ window.__ModuleLoader__.load({
 		/* Session mount UI (Cowork-style): dock button + chips                */
 		/* ------------------------------------------------------------------ */
 		const MOUNT_NS = "desktop-folders";
+		const PENDING_KEY = "dsh-desktop-folders.pending-mount";
+
+		function pendingGet() {
+			try { return window.localStorage.getItem(PENDING_KEY); } catch { return null; }
+		}
+		function pendingSet(p) {
+			try { window.localStorage.setItem(PENDING_KEY, p); } catch { /* ignore */ }
+		}
+		function pendingClear() {
+			try { window.localStorage.removeItem(PENDING_KEY); } catch { /* ignore */ }
+		}
+		function hasMacmountEvent(events) {
+			try {
+				return events.some((ev) => ev?.type === "command/run" && ev?.data?.name === "macmount");
+			} catch { return false; }
+		}
 
 		/** Derive mounted folder paths from the session log (mirror of the host plugin). */
 		function mountsFromEvents(events) {
@@ -248,6 +266,7 @@ window.__ModuleLoader__.load({
 
 		function MountDock({ useSession, t, ctx }) {
 			const [busy, setBusy] = React.useState(false);
+			const autoRan = React.useRef(false);
 			const available = typeof window !== "undefined"
 				&& window.dshBridge
 				&& typeof window.dshBridge.pick === "function";
@@ -295,6 +314,20 @@ window.__ModuleLoader__.load({
 				} catch { /* the host command surfaces its own errors */ }
 			};
 
+			// New-session flow: a folder picked on the hero screen is stashed in
+			// localStorage; the moment this session exists, mount it once.
+			React.useEffect(() => {
+				if (!session || autoRan.current) return;
+				const pending = pendingGet();
+				if (!pending) return;
+				autoRan.current = true;
+				pendingClear();
+				if (hasMacmountEvent(session.events)) return;
+				ctx.remote.commands.execute(session.sessionId, `/macmount ${pending}`, [])
+					.then(() => notify("info", "mount.notify.mounted", { path: pending }))
+					.catch(() => { /* the chip state stays visible via the dock */ });
+			}, [session]);
+
 			// No bridge (plain browser / other clients): the picker cannot open,
 			// so render nothing instead of a dead pill overlapping the composer.
 			if (!available) {
@@ -320,6 +353,45 @@ window.__ModuleLoader__.load({
 					}, "×")
 				))
 			);
+		}
+
+		/** Hero (brand-new session) mount: pick now, auto-mount when the session is born. */
+		function HeroMount({ t, ctx }) {
+			const [busy, setBusy] = React.useState(false);
+			const [picked, setPicked] = React.useState(() => pendingGet());
+			const available = typeof window !== "undefined"
+				&& window.dshBridge
+				&& typeof window.dshBridge.pick === "function";
+
+			const mount = async () => {
+				if (busy || !available) return;
+				setBusy(true);
+				try {
+					const r = await window.dshBridge.pick({ mode: "dir", trust: true, title: "挂载为本会话工作区" });
+					if (!r.canceled && r.paths && r.paths.length > 0) {
+						pendingSet(r.paths[0]);
+						setPicked(r.paths[0]);
+					}
+				} catch { /* picker canceled or failed; stay silent */ } finally {
+					setBusy(false);
+				}
+			};
+
+			// No bridge: render nothing (the picker cannot open on the web).
+			if (!available) {
+				return null;
+			}
+
+			const label = picked
+				? "mount · " + (picked.split("/").pop() || picked)
+				: t("mount.button");
+			return h("button", {
+				type: "button",
+				className: "ddf-mount",
+				title: picked ? picked + " — " + t("mount.heroHint") : t("mount.heroHint"),
+				disabled: busy,
+				onClick: mount
+			}, busy ? t("mount.busy") : label);
 		}
 
 		/* ------------------------------------------------------------------ */
@@ -376,6 +448,18 @@ window.__ModuleLoader__.load({
 					locale: NS
 				},
 				(props) => h(MountDock, { ...props, ctx })
+			));
+
+			// New-session hero screen: this slot renders before a sessionId
+			// exists (all composer.dock/input.* slots are sessionId-gated).
+			ctx.slots.inject("conversation.hero.agentPreset", () => ctx.slots.register(
+				{
+					name: "conversation.hero.agentPreset",
+					id: "dsh-desktop-folders-hero-mount",
+					order: 10,
+					locale: NS
+				},
+				(props) => h(HeroMount, { ...props, ctx })
 			));
 		}
 
