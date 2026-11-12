@@ -33,7 +33,8 @@ window.__ModuleLoader__.load({
 			.ddf-chip-path { min-width: 0; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--dsw-alias-label-tertiary); }
 			.ddf-chip-x { flex: none; border: 0; background: transparent; cursor: pointer; padding: 0 2px; font-size: 12px; line-height: 16px; color: var(--dsw-alias-label-tertiary); border-radius: 999px; }
 			.ddf-chip-x:hover { color: var(--dsw-alias-label-primary); }
-			.ddf-mountrow { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; margin-left: 10px; max-width: calc(100% - 90px); min-width: 0; }
+			.ddf-mountrow { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; margin-left: 0; margin-right: auto; /* auto margin overrides the dock's justify-content:center and pins this row in the left safe zone, clear of the absolutely-centered native "+" */ min-width: 0; max-width: 200px; overflow-x: auto; scrollbar-width: none; }
+			.ddf-mountrow::-webkit-scrollbar { display: none; }
 		`;
 
 		/* ------------------------------------------------------------------ */
@@ -294,8 +295,10 @@ window.__ModuleLoader__.load({
 				} catch { /* the host command surfaces its own errors */ }
 			};
 
+			// No bridge (plain browser / other clients): the picker cannot open,
+			// so render nothing instead of a dead pill overlapping the composer.
 			if (!available) {
-				return h("div", { className: "ddf-chip" }, t("mount.unavailable"));
+				return null;
 			}
 
 			return h("div", { className: "ddf-mountrow" },
