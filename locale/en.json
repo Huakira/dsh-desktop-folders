@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Local folders",
+    "description": "Manage trusted local folders connected to DSH Desktop (Cowork-style): connect, list, revoke — all behind native confirm dialogs."
+  }
+}
