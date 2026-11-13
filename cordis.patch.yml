@@ -1,4 +1,4 @@
 # desktop-folders bundle patch: mounts the trusted-folder management page.
 - insert:
     - id: desktop-folders
-      name: dsh-desktop-folders
+      name: @huakira/desktop-folders

@@ -15,10 +15,10 @@
 ## 安装
 
 ```sh
-dsh plugin --profile web install github:Huakira/dsh-desktop-folders
+dsh plugin --profile web install @huakira/desktop-folders
 ```
 
-或把 `"dsh-desktop-folders": "github:Huakira/dsh-desktop-folders"` 加进 profile 的 `package.json` 依赖与 `dsh.profile.bundles` 后 `pnpm install`。
+或把 `"dsh-desktop-folders": "@huakira/desktop-folders"` 加进 profile 的 `package.json` 依赖与 `dsh.profile.bundles` 后 `pnpm install`。
 
 ## 壳端要求
 

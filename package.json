@@ -1,5 +1,5 @@
 {
-  "name": "dsh-desktop-folders",
+  "name": "@huakira/desktop-folders",
   "version": "0.2.3",
   "description": "DSH Desktop companion: Cowork-style trusted local folders (settings page) plus per-session mount button and chips in the composer dock via window.dshBridge and /macmount.",
   "keywords": [
@@ -36,5 +36,20 @@
         "@deepseek-ai/dsh-client-locale"
       ]
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Huakira/dsh-desktop-folders.git"
+  },
+  "author": {
+    "name": "Huakira",
+    "email": "huakexie@proton.me"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "dsh": ">=0.2.2-rc.1 <0.3.0",
+    "node": ">=20"
   }
 }
