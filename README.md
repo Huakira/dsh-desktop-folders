@@ -1,5 +1,7 @@
 # dsh-desktop-folders
 
+> 个人自用插件，代码和文档由 AI 参与编写，不承诺维护。使用前请先备份 DSH 配置。
+
 [DSH Desktop](https://github.com/Huakira/dsh-desktop)（Mac Electron 壳）的配套 DSH 插件：在 DSH 设置页里管理连接给壳的本地信任文件夹（Claude Cowork 式工作目录）。
 
 连接过的文件夹对 DSH 直接可读写，不再逐个文件授权；也可以随时在设置页撤销。所有连接/撤销/删除操作都由壳弹系统确认框，删除永远只进废纸篓。
