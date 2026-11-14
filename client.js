@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-	id: "dsh-desktop-folders",
+	id: "@huakirax/dsh-desktop-folders",
 	factory: (require) => {
 		const React = require("react");
 		const h = React.createElement;
@@ -433,7 +433,7 @@ window.__ModuleLoader__.load({
 			ctx.slots.inject("plugins.bundle.config", () => ctx.slots.register(
 				{
 					name: "plugins.bundle.config",
-					key: "dsh-desktop-folders",
+					key: "@huakirax/dsh-desktop-folders",
 					locale: NS
 				},
 				() => h(FoldersPage, { locale })

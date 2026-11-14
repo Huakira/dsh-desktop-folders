@@ -1,6 +1,6 @@
 {
   "name": "@huakirax/dsh-desktop-folders",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "DSH Desktop companion: Cowork-style trusted local folders (settings page) plus per-session mount button and chips in the composer dock via window.dshBridge and /macmount.",
   "keywords": [
     "dsh",
